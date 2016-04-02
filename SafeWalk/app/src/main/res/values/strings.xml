@@ -19,4 +19,7 @@
         completions."
     </string>
     <string name="title_activity_places_api">PlacesAPI</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="server_client_id">AIzaSyBB_vVir-ZV9Yf0ezk0PUdbSUi13nxwGI4</string>
+    <string name="google_app_id">888914241568</string>
 </resources>

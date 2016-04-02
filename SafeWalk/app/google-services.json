@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_id": "safewalk-569e4",
+    "project_number": "888914241568",
+    "name": "SafeWalk"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888914241568:android:4c4ba19dae37cd18",
+        "client_id": "android:com.google.safewalk",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.google.safewalk",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": AIzaSyBB_vVir-ZV9Yf0ezk0PUdbSUi13nxwGI4,
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
