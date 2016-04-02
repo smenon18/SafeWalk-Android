@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Check Maps"
         android:id="@+id/button2"
+        android:onClick="SwitchMapsActivity"
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:background="#29aab3"

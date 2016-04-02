@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void SwitchMapsActivity(View view) {
+        Intent intent = new Intent (MainActivity.this, MapsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
