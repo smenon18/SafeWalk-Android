@@ -55,6 +55,11 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
      */
     private GoogleApiClient client;
 
+    public void SwitchArrivalPage() {
+        Intent intent = new Intent(MapsActivity.this, ArrivalPage.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("uniquewords");
@@ -100,7 +105,13 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
 
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+
+            //THIS IS NOT SUPPOSED TO BE HERE BECAUSE IT WON"T GO THROUGH THE GET-LOCATION PART
+            SwitchArrivalPage();
+
             startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+
         } catch (GooglePlayServicesRepairableException e) {
             e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
@@ -109,12 +120,14 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
+
                 Place place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("Place: %s", place.getLatLng());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
@@ -126,7 +139,9 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
                 d_long = marr[1];//Double.parseDouble(
                 System.out.println("DEST" + d_lat + "," + d_long);
                 new MyDownloadTask().execute();
+                //SwitchArrivalPage();
             }
+
         }
 
     }

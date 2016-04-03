@@ -81,9 +81,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private GoogleApiClient client;
 
-    public void SwitchMapsActivity(String email) {
+    public void SwitchMapsActivity() {
         Intent intent = new Intent (LoginActivity.this, MapsActivity.class);
-        intent.putExtra("Email", email);
+        //intent.putExtra("Email", email);
         startActivity(intent);
     }
 
@@ -435,8 +435,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 int response = urlConnection.getResponseCode();
                 Log.w("RESPONSE-LOGIN", Integer.toString(response));
                 Log.w("BODY-LOGIN", urlConnection.getResponseMessage());
-                if (response == 200) {
-                    SwitchMapsActivity(mEmail);
+                if (response == 202) {
+                    SwitchMapsActivity();
                     return true;
                 } else {
                     wrongpassword = true;
@@ -466,7 +466,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Log.w("RESPONSE-CREATE_USER", Integer.toString(response));
 
                     if (response == 202) {
-                        SwitchMapsActivity(mEmail);
+                        SwitchMapsActivity();
                         return true;
                     }
 
