@@ -1,8 +1,8 @@
 BUGS
 
-1) In MapsActivity.java, it is supposed to call the SwitchArrivalPage after the location is picked and data is send, but I don't know where to put the SwitchArrivalPage and there's something wrong with the data sending. So I just put SwitchArrivalPage at the very beginning and the location picker is not called in this way.
+1)  **Fixed** In MapsActivity.java, it is supposed to call the SwitchArrivalPage after the location is picked and data is send, but I don't know where to put the SwitchArrivalPage and there's something wrong with the data sending. So I just put SwitchArrivalPage at the very beginning and the location picker is not called in this way.
 
-2) In ArrivalPage.java, it is supposed to first send arrival info to web and then call the SwitchFinalPage, but there is something wrong with the data sending as well.
+2) *(Fixable dependig on server InTransit working)* In ArrivalPage.java, it is supposed to first send arrival info to web and then call the SwitchFinalPage, but there is something wrong with the data sending as well.
 
 
 * The entire project, though not perfect, can at least run in this way.
