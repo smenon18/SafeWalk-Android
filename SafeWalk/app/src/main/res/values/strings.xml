@@ -23,4 +23,6 @@
     <string name="server_client_id">AIzaSyBB_vVir-ZV9Yf0ezk0PUdbSUi13nxwGI4</string>
     <string name="google_app_id">888914241568</string>
     <string name="google_maps_key">AIzaSyBB_vVir-ZV9Yf0ezk0PUdbSUi13nxwGI4</string>
+    <string name="title_activity_arrival_page">SafeWalk</string>
+    <string name="title_activity_final_page">SafeWalk</string>
 </resources>
