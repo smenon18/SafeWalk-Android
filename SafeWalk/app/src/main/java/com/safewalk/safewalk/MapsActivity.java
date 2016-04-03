@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -15,19 +16,24 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import im.delight.android.location.SimpleLocation;
 
-package com.example.felix.princetonsafewalk;
 
 
 
@@ -37,6 +43,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
     private String d_lat = "0";
     private String d_long = "0";
     private String m_time = "0";
+    private String m_dist = "0";
     //private GoogleMap mMap;
 
     private SimpleLocation location;
@@ -73,6 +80,22 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
         System.out.println("lat" + latitude);
         s_lat = Double.toString(latitude);
         s_long = Double.toString(longitude);
+        /*
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }*/
+
+        // TODO
+        //    }
+
+        //});
 
 
         try {
@@ -150,12 +173,13 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
                     //print result
                     String ares = response.toString();
                     System.out.println(ares);
-                    Pattern pattern = Pattern.compile("([0-9]+) mins");
+                    Pattern pattern = Pattern.compile("([0-9]+\\.?[0-9]?) mi.*([0-9]+) mins");
                     Matcher matcher = pattern.matcher(ares);
                     if (matcher.find())
                     {
-                        System.out.println(matcher.group(0));
-                        m_time = matcher.group(1);
+                        System.out.println("FLAG dist " + matcher.group(1) + "," + "time " + matcher.group(2));
+                        m_dist = matcher.group(1);
+                        m_time = matcher.group(2);
                     }
 
                 }
@@ -167,28 +191,72 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
             }
             return null; //HISDFPSDPFHPSDP
         }
+        protected void onPostExecute(Void res)
+        {
+            new SendTrip().execute();
+        }
     }
 
-    @Override
-    protected void onResume() {
 
-
-        // make the device update its location
-        location.beginUpdates();
-        super.onResume();
-
-
-        // ...
+    private String makeJSon(String email, String departure_time, String expected_arrival_time, String start_lat, String start_long, String end_lat, String end_long, String est_distances) {
+        String jsonString = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("email", email);
+            data.put("departure time", departure_time);
+            data.put("expected_arrival_time", expected_arrival_time);
+            data.put("start_pos", start_lat+","+start_long);
+            data.put("end_pos", end_lat+","+end_long);
+            data.put("est_distances", est_distances);
+            jsonString = data.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonString;
     }
 
-    @Override
-    protected void onPause() {
-        // stop location updates (saves battery)
-        location.endUpdates();
+    class SendTrip extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 
-        // ...
+                Calendar date = Calendar.getInstance();
+                long t= date.getTimeInMillis();
+                Date future=new Date(t + (Integer.parseInt(m_time) * ONE_MINUTE_IN_MILLIS));
 
-        super.onPause();
+
+                String message = makeJSon("abc@abc.com", (new SimpleDateFormat("dd/MM/yy HH:mm:ss")).toString(), future.toString(), s_lat, s_long, d_lat, d_long, m_dist);
+
+                URL url = new URL("http://safewalk-web.herokuapp.com/api/notify_parent/");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("PUT");
+
+                //OutputStream write = urlConnection.getOutputStream();
+
+                OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                writer.write(message);
+
+
+                // InputStream reader = urlConnection.getInputStream();
+
+                int response = urlConnection.getResponseCode();
+                Log.w("RESPONSE-Notify", Integer.toString(response));
+
+                if (response < 200 || response > 299) {
+                    writer.write(message);
+                    System.out.println("Response code" + response + " will try once more.");
+                }
+                else {System.out.println("WE DIDNT ERROR");}
+                writer.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
 
