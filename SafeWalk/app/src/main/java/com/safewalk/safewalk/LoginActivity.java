@@ -419,12 +419,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
 
                 String message = makeJSon(mEmail, mPassword);
+                Log.w("JSON Object", message);
 
-                URL url = new URL("https://safewalk-web.herokuapp.com/api/check_login/");
+                URL url = new URL("http://safewalk-web.herokuapp.com/api/check_login/");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestMethod("PUT");
 
                 OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
                 writer.write(message);
@@ -432,7 +433,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 int response = urlConnection.getResponseCode();
                 Log.w("RESPONSE-LOGIN", Integer.toString(response));
-
+                Log.w("BODY-LOGIN", urlConnection.getResponseMessage());
                 if (response == 200) {
                     SwitchMapsActivity();
                     return true;
