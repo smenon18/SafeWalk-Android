@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,7 +53,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+    //private GoogleApiClient client;
 
     public void SwitchArrivalPage() {
         Intent intent = new Intent(MapsActivity.this, ArrivalPage.class);
@@ -108,7 +108,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
 
 
             //THIS IS NOT SUPPOSED TO BE HERE BECAUSE IT WON"T GO THROUGH THE GET-LOCATION PART
-            SwitchArrivalPage();
+            //SwitchArrivalPage();
 
             startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
 
@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
 
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -253,6 +253,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
 
                 OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
                 writer.write(message);
+                writer.close();
 
 
                 // InputStream reader = urlConnection.getInputStream();
@@ -261,16 +262,20 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
                 Log.w("RESPONSE-Notify", Integer.toString(response));
 
                 if (response < 200 || response > 299) {
-                    writer.write(message);
-                    System.out.println("Response code" + response + " will try once more.");
+                    //writer.write(message);
+                    System.out.println("Response code " + response + " will not try once more.");
                 }
                 else {System.out.println("WE DIDNT ERROR");}
-                writer.close();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
+        }
+        protected void onPostExecute(Void res)
+        {
+            SwitchArrivalPage();
         }
     }
 
@@ -280,7 +285,7 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
         System.out.println("we destroyed here");
         super.onDestroy();
     }
-
+/*
     @Override
     public void onStart() {
         super.onStart();
@@ -319,5 +324,5 @@ public class MapsActivity extends FragmentActivity /*implements OnMapReadyCallba
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-    }
+    }*/
 }
